@@ -1,24 +1,6 @@
 import multer from "multer";
-import path from "path";
-import fs from "fs";
-import { fileURLToPath } from "url";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-export const UPLOAD_DIR_PATH = path.join(__dirname, "..", "..", "uploads");
-
-// Ensure the uploads dir exists at boot
-if (!fs.existsSync(UPLOAD_DIR_PATH)) {
-  fs.mkdirSync(UPLOAD_DIR_PATH, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, UPLOAD_DIR_PATH),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase() || ".jpg";
-    const unique = `${Date.now()}-${Math.random().toString(36).slice(2, 10)}${ext}`;
-    cb(null, unique);
-  },
-});
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   const ok = ["image/jpeg", "image/jpg", "image/png", "image/webp"].includes(

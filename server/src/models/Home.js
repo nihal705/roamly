@@ -19,17 +19,14 @@ const homeSchema = new mongoose.Schema(
     bathrooms: { type: Number, default: 1, min: 1 },
     amenities: [String],
     images: [String],
+    imagePublicIds: [String],   // ← NEW: parallel to images[], used for Cloudinary deletion
     rating: { type: Number, default: 4.8, min: 0, max: 5 },
     reviewCount: { type: Number, default: 0 },
-
-    // Admin-controlled visibility
     status: {
       type: String,
       enum: ["active", "pending_approval", "rejected", "deleted"],
       default: "pending_approval",
     },
-
-    // Host-controlled availability + system auto-pause
     listingStatus: {
       type: String,
       enum: ["active", "paused", "booked"],
