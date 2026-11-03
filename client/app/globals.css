@@ -56,7 +56,8 @@
   border-top: 1px solid #eee;
   font-size: 13px;
   color: var(--muted);
-  margin-top: 60px;
+  margin-top: auto;
+  background: #ffffff;
 }
 
 .category-pills {
@@ -113,10 +114,24 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+}
+
 body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   color: var(--ink);
   font-family: Arial, sans-serif;
+}
+
+main {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 a {
@@ -206,8 +221,11 @@ nav {
 
 .section {
   max-width: 1440px;
-  margin: auto;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 auto;
   padding: 48px clamp(24px, 5vw, 80px);
+  flex: 1 0 auto;
 }
 
 .section-heading {
@@ -700,9 +718,12 @@ nav {
 }
 
 .auth {
-  min-height: calc(100vh - 80px);
+  flex: 1 0 auto;
   background: var(--cream);
   padding: 50px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .form {
