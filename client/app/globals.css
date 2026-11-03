@@ -62,9 +62,15 @@
 
 .category-pills {
   display: flex;
-  gap: 14px;
-  padding: 18px clamp(20px, 5vw, 80px) 4px;
+  gap: 12px;
+  padding: 16px clamp(16px, 4vw, 80px) 8px;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.category-pills::-webkit-scrollbar {
+  display: none;
 }
 .category-pills a {
   border: 1px solid #ddd;
@@ -828,10 +834,76 @@ nav {
   padding: 30px 0;
 }
 
+/* Mobile Bottom Navigation */
+.mobile-bottom-nav {
+  display: none;
+}
+
 @media (max-width: 800px) {
+  body {
+    padding-bottom: 74px;
+  }
+
+  .mobile-bottom-nav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 62px;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid #e2e8f0;
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 4px calc(env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -3px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 100%;
+    color: #64748b;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 500;
+    gap: 3px;
+    transition: all 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mobile-nav-item.active {
+    color: var(--rose, #ff385c);
+    font-weight: 700;
+  }
+
+  .mobile-nav-icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mobile-nav-dot {
+    position: absolute;
+    top: -2px;
+    right: -4px;
+    width: 8px;
+    height: 8px;
+    background: var(--rose, #ff385c);
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+  }
+
   header {
-    height: 68px;
-    padding: 0 20px;
+    height: 64px;
+    padding: 0 16px;
   }
   nav {
     gap: 12px;
@@ -840,25 +912,31 @@ nav {
     display: none;
   }
   .hero {
-    padding: 55px 24px;
+    padding: 40px 16px 30px;
   }
   .hero h1 {
-    letter-spacing: -2px;
+    font-size: 28px;
+    letter-spacing: -1px;
   }
   .searchbar {
-    border-radius: 16px;
+    border-radius: 20px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 5px;
+    padding: 8px;
+    gap: 6px;
   }
   .searchbar label {
-    border: 0;
-    padding: 9px;
+    border: 1px solid #f1f5f9;
+    border-radius: 12px;
+    padding: 8px 12px;
+    background: #fafafa;
   }
   .searchbar button {
     grid-column: 1/-1;
     width: auto;
-    margin: 4px;
+    height: 46px;
+    margin: 4px 0 0;
+    border-radius: 12px;
   }
   .home-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -905,20 +983,60 @@ nav {
     position: static;
   }
   .booking {
-    grid-template-columns: 100px 1fr;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 12px;
   }
   .booking img {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 180px;
+    border-radius: 12px;
+    object-fit: cover;
   }
   .booking > b {
-    grid-column: 2;
+    font-size: 17px;
+  }
+  .stats {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .stats > div {
+    flex: 1 1 calc(50% - 12px);
+    min-width: 130px;
   }
   .grid-form {
     grid-template-columns: 1fr;
   }
   .grid-form label {
     grid-column: 1/-1 !important;
+  }
+}
+
+@media (max-width: 540px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .home-card .image-wrap {
+    aspect-ratio: 16/10;
+    border-radius: 16px;
+  }
+  .section {
+    padding: 24px 16px;
+  }
+  .section-heading h1,
+  .section-heading h2 {
+    font-size: 22px;
+  }
+  .searchbar {
+    grid-template-columns: 1fr;
+  }
+  .site-footer {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    padding: 24px 16px 20px;
   }
 }
 

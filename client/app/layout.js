@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import { MobileNav } from "../components/MobileNav";
 import { AuthProvider } from "../providers/AuthProvider";
 import { DemoBanner } from "../components/DemoBanner";
 
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
           <Header />
           <main>{children}</main>
           <Footer />
+          <MobileNav />
         </AuthProvider>
       </body>
     </html>
