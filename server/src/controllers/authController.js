@@ -3,19 +3,30 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import { AppError, asyncHandler } from "../utils/appError.js";
 
+function isCrossSiteOrProd() {
+  return (
+    process.env.NODE_ENV === "production" ||
+    Boolean(process.env.RAILWAY_ENVIRONMENT) ||
+    Boolean(process.env.RAILWAY_STATIC_URL) ||
+    (process.env.CLIENT_URL && !process.env.CLIENT_URL.includes("localhost"))
+  );
+}
+
 function sendToken(user, res) {
   const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
+  const crossSite = isCrossSiteOrProd();
   res.cookie("token", token, {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: crossSite ? "none" : "lax",
+    secure: crossSite,
     domain: process.env.COOKIE_DOMAIN || undefined,
     maxAge: 604800000,
     path: "/",
   });
   res.status(200).json({
+    token,
     user: {
       id: user._id,
       name: user.name,
@@ -52,10 +63,11 @@ export const login = asyncHandler(async (req, res) => {
 });
 
 export const logout = (req, res) => {
+  const crossSite = isCrossSiteOrProd();
   res.clearCookie("token", {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: crossSite ? "none" : "lax",
+    secure: crossSite,
     domain: process.env.COOKIE_DOMAIN || undefined,
     path: "/",
   });

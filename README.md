@@ -8,6 +8,7 @@ Search stays, book with test-mode payments, manage listings, and cancel with tra
 
 <br />
 
+[![Live Demo](https://img.shields.io/badge/Demo-roamly--stays.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://roamly-stays.vercel.app/)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=nextdotjs)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-ESM-000000?style=for-the-badge&logo=express)
@@ -15,6 +16,10 @@ Search stays, book with test-mode payments, manage listings, and cancel with tra
 ![Razorpay](https://img.shields.io/badge/Razorpay-Test%20Mode-0C2451?style=for-the-badge)
 ![Node](https://img.shields.io/badge/Node.js-20%2B-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
+
+<br />
+
+**[🌐 Live Site: roamly-stays.vercel.app](https://roamly-stays.vercel.app/)**
 
 <br />
 

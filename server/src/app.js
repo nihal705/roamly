@@ -30,7 +30,14 @@ app.use(
   cors({
     origin: (origin, callback) => {
       // allow requests with no origin (like mobile apps, curl, server-to-server)
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) return callback(null, true);
+
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
+        /^https:\/\/roamly[a-z0-9\-_]*\.vercel\.app$/.test(origin) ||
+        origin === "http://localhost:3000";
+
+      if (isAllowed) {
         return callback(null, true);
       }
       return callback(new Error(`Origin ${origin} not allowed by CORS`));
