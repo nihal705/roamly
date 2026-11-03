@@ -72,17 +72,16 @@ export function BookingCard({ home }) {
     if (isPaused) return;
     if (!form.checkIn || !form.checkOut) return setNotice("Choose your dates first.");
     if (dateConflict) return;
-    localStorage.setItem(
-      "airbnb-cart",
-      JSON.stringify({
-        homeId: home._id,
-        title: home.title,
-        image: home.images?.[0],
-        ...form,
-        guests: Number(form.guests),
-        quote,
-      }),
-    );
+    const cartData = JSON.stringify({
+      homeId: home._id,
+      title: home.title,
+      image: home.images?.[0],
+      ...form,
+      guests: Number(form.guests),
+      quote,
+    });
+    localStorage.setItem("roamly-cart", cartData);
+    localStorage.setItem("airbnb-cart", cartData);
     router.push("/cart");
   }
 
