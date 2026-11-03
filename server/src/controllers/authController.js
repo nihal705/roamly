@@ -52,7 +52,13 @@ export const login = asyncHandler(async (req, res) => {
 });
 
 export const logout = (req, res) => {
-  res.clearCookie("token");
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    secure: process.env.NODE_ENV === "production",
+    domain: process.env.COOKIE_DOMAIN || undefined,
+    path: "/",
+  });
   res.status(204).send();
 };
 
