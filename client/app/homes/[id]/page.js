@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { BookingCard } from "../../../components/BookingCard";
 import { FavouriteButton } from "../../../components/FavouriteButton";
+import { ImageGallery } from "../../../components/ImageGallery";
 
 const api = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -38,11 +39,7 @@ export default async function HomeDetailPage({ params }) {
         {home.location.state ? `, ${home.location.state}` : ""}
       </p>
 
-      <div className="gallery">
-        {images.slice(0, 5).map((img, i) => (
-          <img key={i} src={img} alt={home.title} />
-        ))}
-      </div>
+      <ImageGallery images={images} title={home.title} />
 
       <div className="detail-columns">
         <article>
