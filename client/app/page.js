@@ -4,10 +4,15 @@ import { SearchBar } from "../components/SearchBar";
 
 const api = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 async function getHomes() {
   try {
-    const res = await fetch(`${api}/homes`, { next: { revalidate: 60 } });
-    return (await res.json()).homes || [];
+    const res = await fetch(`${api}/homes`, { cache: "no-store" });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.homes || [];
   } catch {
     return [];
   }

@@ -8,7 +8,7 @@ Search stays, book with test-mode payments, manage listings, and cancel with tra
 
 <br />
 
-[![Live Demo](https://img.shields.io/badge/Demo-roamly--stays.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://roamly-stays.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Demo-roamly.gnihal.com-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://roamly.gnihal.com/)
 ![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=nextdotjs)
 ![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-ESM-000000?style=for-the-badge&logo=express)
@@ -19,7 +19,7 @@ Search stays, book with test-mode payments, manage listings, and cancel with tra
 
 <br />
 
-**[🌐 Live Site: roamly-stays.vercel.app](https://roamly-stays.vercel.app/)**
+**[🌐 Live Site: roamly.gnihal.com](https://roamly.gnihal.com/)** *(also accessible at [roamly-stays.vercel.app](https://roamly-stays.vercel.app/))*
 
 <br />
 

@@ -34,6 +34,8 @@ app.use(
 
       const isAllowed =
         allowedOrigins.includes(origin) ||
+        origin === "https://roamly.gnihal.com" ||
+        /^https:\/\/([a-z0-9\-_]+\.)?gnihal\.com$/.test(origin) ||
         /^https:\/\/roamly[a-z0-9\-_]*\.vercel\.app$/.test(origin) ||
         origin === "http://localhost:3000";
 

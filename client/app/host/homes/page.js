@@ -9,9 +9,17 @@ export default function HostHomesListPage() {
   const [message, setMessage] = useState("");
 
   async function load() {
-    const r = await fetch(`${api}/homes/host/mine`, { credentials: "include" });
-    if (!r.ok) return setMessage("Log in as a host.");
-    setHomes((await r.json()).homes);
+    try {
+      const r = await fetch(`${api}/homes/host/mine`, {
+        credentials: "include",
+        cache: "no-store",
+      });
+      if (!r.ok) return setMessage("Log in as a host.");
+      const data = await r.json();
+      setHomes(data.homes || []);
+    } catch {
+      setMessage("Failed to load your listings.");
+    }
   }
 
   useEffect(() => {
@@ -20,19 +28,44 @@ export default function HostHomesListPage() {
 
   async function remove(id) {
     if (!confirm("Delete this listing?")) return;
-    const r = await fetch(`${api}/homes/${id}`, {
-      method: "DELETE",
-      credentials: "include",
-    });
-    if (r.ok || r.status === 204) load();
+    try {
+      const r = await fetch(`${api}/homes/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (r.ok || r.status === 204) {
+        setHomes((prev) => prev.filter((h) => h._id !== id));
+      } else {
+        const data = await r.json().catch(() => ({}));
+        alert(data.message || "Failed to delete listing.");
+      }
+    } catch {
+      alert("Network error: failed to delete listing.");
+    }
   }
 
   async function toggle(id) {
-    const r = await fetch(`${api}/homes/${id}/toggle-listing`, {
-      method: "PATCH",
-      credentials: "include",
-    });
-    if (r.ok) load();
+    try {
+      const r = await fetch(`${api}/homes/${id}/toggle-listing`, {
+        method: "PATCH",
+        credentials: "include",
+      });
+      if (r.ok) {
+        const data = await r.json();
+        setHomes((prev) =>
+          prev.map((h) =>
+            h._id === id
+              ? { ...h, listingStatus: data.home?.listingStatus || (h.listingStatus === "paused" ? "active" : "paused") }
+              : h,
+          ),
+        );
+      } else {
+        const data = await r.json().catch(() => ({}));
+        alert(data.message || "Failed to update listing status.");
+      }
+    } catch {
+      alert("Network error: failed to update listing status.");
+    }
   }
 
   return (

@@ -207,14 +207,25 @@ export const updateHome = asyncHandler(async (req, res) => {
 });
 
 export const deleteHome = asyncHandler(async (req, res) => {
-  const home = await Home.findOne({ _id: req.params.id, host: req.user._id });
+  const query =
+    req.user.role === "admin"
+      ? { _id: req.params.id }
+      : { _id: req.params.id, host: req.user._id };
+  const home = await Home.findOne(query);
   if (!home) throw new AppError("Home not found", 404);
 
   // Delete every image, Cloudinary or legacy local
-  for (let i = 0; i < home.images.length; i++) {
+  for (let i = 0; i < (home.images || []).length; i++) {
     const publicId = home.imagePublicIds?.[i];
-    if (publicId) await destroyCloudinaryImage(publicId);
-    else unlinkIfUploaded(home.images[i]);
+    if (publicId) {
+      try {
+        await destroyCloudinaryImage(publicId);
+      } catch (err) {
+        console.error("Cloudinary destroy failed:", err);
+      }
+    } else {
+      unlinkIfUploaded(home.images[i]);
+    }
   }
   home.status = "deleted";
   home.images = [];
