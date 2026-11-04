@@ -19,7 +19,7 @@ Search stays, book with test-mode payments, manage listings, and cancel with tra
 
 <br />
 
-**[🌐 Live Site: roamly.gnihal.com](https://roamly.gnihal.com/)** *(also accessible at [roamly-stays.vercel.app](https://roamly-stays.vercel.app/))*
+**[Live Site: roamly.gnihal.com](https://roamly.gnihal.com/)**
 
 <br />
 
