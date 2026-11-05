@@ -4,11 +4,11 @@ export async function connectDatabase() {
   if (!process.env.MONGODB_URI) throw new Error("MONGODB_URI is required");
 
   const options = {
-    maxPoolSize: 10, 
-    minPoolSize: 1,  
-    maxIdleTimeMS: 30000, 
-    socketTimeoutMS: 45000, 
-    serverSelectionTimeoutMS: 30000, 
+    maxPoolSize: 10,
+    minPoolSize: 0, // Allow pool to drop to 0 idle connections so heartbeats don't keep Railway awake
+    maxIdleTimeMS: 10000, // Close idle sockets after 10 seconds of no requests
+    socketTimeoutMS: 45000,
+    serverSelectionTimeoutMS: 30000,
   };
 
   try {
