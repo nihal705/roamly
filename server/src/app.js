@@ -19,6 +19,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadsPath = path.join(__dirname, "..", "uploads");
 
 const app = express();
+app.set("trust proxy", 1);
 app.use(helmet({ crossOriginResourcePolicy: false }));
 
 const allowedOrigins = (process.env.CLIENT_URL || "http://localhost:3000")
@@ -67,7 +68,11 @@ app.get("/api/health", (req, res) =>
 
 app.use(
   "/api/auth",
-  rateLimit({ windowMs: 15 * 60 * 1000, limit: 100 }),
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 100,
+    validate: { xForwardedForHeader: false },
+  }),
   authRoutes,
 );
 
