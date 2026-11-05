@@ -8,7 +8,8 @@ export async function connectDatabase() {
     minPoolSize: 0, // Allow pool to drop to 0 idle connections so heartbeats don't keep Railway awake
     maxIdleTimeMS: 10000, // Close idle sockets after 10 seconds of no requests
     socketTimeoutMS: 45000,
-    serverSelectionTimeoutMS: 30000,
+    serverSelectionTimeoutMS: 10000,
+    heartbeatFrequencyMS: 1800000, // 30 minutes instead of default 10 seconds, preventing continuous keep-alive packets
   };
 
   try {
