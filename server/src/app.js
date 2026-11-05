@@ -14,6 +14,7 @@ import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import { errorHandler, notFound } from "./middleware/error.js";
 import hostRoutes from "./routes/hostRoutes.js";
+import { connectDatabase, resetDbIdleTimer } from "./config/db.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const uploadsPath = path.join(__dirname, "..", "uploads");
@@ -65,6 +66,18 @@ app.use("/uploads", express.static(uploadsPath));
 app.get("/api/health", (req, res) =>
   res.json({ ok: true, service: "Roamly-api" }),
 );
+
+// Auto-connect Mongoose on incoming request and schedule idle disconnect for Serverless Sleep
+app.use(async (req, res, next) => {
+  try {
+    await connectDatabase();
+    resetDbIdleTimer();
+    res.on("finish", () => resetDbIdleTimer());
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
 
 app.use(
   "/api/auth",

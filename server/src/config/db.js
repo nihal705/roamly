@@ -1,22 +1,46 @@
 import mongoose from "mongoose";
 
+let isConnecting = null;
+let idleTimer = null;
+const IDLE_DISCONNECT_MS = 30000; // 30 seconds of inactivity disconnects Mongoose so Railway can sleep
+
 export async function connectDatabase() {
+  if (mongoose.connection.readyState === 1) return mongoose.connection;
+  if (isConnecting) return isConnecting;
+
   if (!process.env.MONGODB_URI) throw new Error("MONGODB_URI is required");
 
   const options = {
     maxPoolSize: 10,
-    minPoolSize: 0, // Allow pool to drop to 0 idle connections so heartbeats don't keep Railway awake
-    maxIdleTimeMS: 10000, // Close idle sockets after 10 seconds of no requests
-    socketTimeoutMS: 45000,
     serverSelectionTimeoutMS: 10000,
-    heartbeatFrequencyMS: 1800000, // 30 minutes instead of default 10 seconds, preventing continuous keep-alive packets
   };
 
-  try {
-    await mongoose.connect(process.env.MONGODB_URI, options);
-    console.log("MongoDB connected with resilient pool settings.");
-  } catch (err) {
-    console.error("MongoDB connection error:", err);
-    process.exit(1);
-  }
+  isConnecting = (async () => {
+    try {
+      await mongoose.connect(process.env.MONGODB_URI, options);
+      console.log("MongoDB connected.");
+      return mongoose.connection;
+    } catch (err) {
+      console.error("MongoDB connection error:", err);
+      throw err;
+    } finally {
+      isConnecting = null;
+    }
+  })();
+
+  return isConnecting;
+}
+
+export function resetDbIdleTimer() {
+  if (idleTimer) clearTimeout(idleTimer);
+  idleTimer = setTimeout(async () => {
+    if (mongoose.connection.readyState === 1) {
+      console.log("Closing idle DB connection so Railway can enter Serverless Sleep...");
+      try {
+        await mongoose.disconnect();
+      } catch (err) {
+        console.error("Error closing idle DB connection:", err);
+      }
+    }
+  }, IDLE_DISCONNECT_MS);
 }
